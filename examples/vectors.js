@@ -1,15 +1,8 @@
-var fonts = {
-	Roboto: {
-		normal: 'fonts/Roboto-Regular.ttf',
-		bold: 'fonts/Roboto-Medium.ttf',
-		italics: 'fonts/Roboto-Italic.ttf',
-		bolditalics: 'fonts/Roboto-MediumItalic.ttf'
-	}
-};
+var pdfmake = require('../js/index'); // only during development, otherwise use the following line
+//var pdfmake = require('pdfmake');
 
-var PdfPrinter = require('../src/printer');
-var printer = new PdfPrinter(fonts);
-var fs = require('fs');
+var Roboto = require('../fonts/Roboto');
+pdfmake.addFonts(Roboto);
 
 
 var docDefinition = {
@@ -17,9 +10,9 @@ var docDefinition = {
 		{
 			text: [
 				'This ',
-				{text: 'is', color: 'green'},
+				{ text: 'is', color: 'green' },
 				' the first ',
-				{text: 'paragraph', color: 'red'}
+				{ text: 'paragraph', color: 'red' }
 			]
 		},
 		{
@@ -31,7 +24,7 @@ var docDefinition = {
 					w: 310,
 					h: 260,
 					r: 5,
-					dash: {length: 5},
+					dash: { length: 5 },
 					// lineWidth: 10,
 					lineColor: 'blue',
 				},
@@ -49,14 +42,14 @@ var docDefinition = {
 					type: 'polyline',
 					lineWidth: 3,
 					closePath: true,
-					points: [{x: 10, y: 10}, {x: 35, y: 40}, {x: 100, y: 40}, {x: 125, y: 10}]
+					points: [{ x: 10, y: 10 }, { x: 35, y: 40 }, { x: 100, y: 40 }, { x: 125, y: 10 }]
 				},
 				{
 					type: 'polyline',
 					lineWidth: 2,
 					color: 'blue',
 					lineColor: 'red',
-					points: [{x: 10, y: 110}, {x: 35, y: 140}, {x: 100, y: 140}, {x: 125, y: 110}, {x: 10, y: 110}]
+					points: [{ x: 10, y: 110 }, { x: 35, y: 140 }, { x: 100, y: 140 }, { x: 125, y: 110 }, { x: 10, y: 110 }]
 				},
 				{
 					type: 'line',
@@ -106,6 +99,12 @@ var docDefinition = {
 					type: 'rect',
 					x: 10, y: 230, w: 100, h: 10,
 					linearGradient: ['red', 'yellow', 'green', 'blue']
+				},
+				{
+					type: 'ellipse',
+					x: 260, y: 140,
+					r1: 30, r2: 20,
+					linearGradient: ['red', 'green', 'blue', 'red'],
 				}
 			]
 		},
@@ -123,6 +122,11 @@ var docDefinition = {
 	}
 };
 
-var pdfDoc = printer.createPdfKitDocument(docDefinition);
-pdfDoc.pipe(fs.createWriteStream('pdfs/vectors.pdf'));
-pdfDoc.end();
+var now = new Date();
+
+var pdf = pdfmake.createPdf(docDefinition);
+pdf.write('pdfs/vectors.pdf').then(() => {
+	console.log(new Date() - now);
+}, err => {
+	console.error(err);
+});

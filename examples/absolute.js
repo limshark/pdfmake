@@ -1,15 +1,8 @@
-var fonts = {
-	Roboto: {
-		normal: 'fonts/Roboto-Regular.ttf',
-		bold: 'fonts/Roboto-Medium.ttf',
-		italics: 'fonts/Roboto-Italic.ttf',
-		bolditalics: 'fonts/Roboto-MediumItalic.ttf'
-	}
-};
+var pdfmake = require('../js/index'); // only during development, otherwise use the following line
+//var pdfmake = require('pdfmake');
 
-var PdfPrinter = require('../src/printer');
-var printer = new PdfPrinter(fonts);
-var fs = require('fs');
+var Roboto = require('../fonts/Roboto');
+pdfmake.addFonts(Roboto);
 
 
 var docDefinition = {
@@ -18,31 +11,31 @@ var docDefinition = {
 			image: 'bee',
 			width: 50,
 			height: 50,
-			absolutePosition: {x: 100, y: 100}
+			absolutePosition: { x: 100, y: 100 }
 		},
 		{
 			image: 'bee',
 			width: 50,
 			height: 50,
-			absolutePosition: {x: 150, y: 150}
+			absolutePosition: { x: 150, y: 150 }
 		},
 		{
 			image: 'bee',
 			width: 50,
 			height: 50,
-			absolutePosition: {x: 200, y: 200}
+			absolutePosition: { x: 200, y: 200 }
 		},
 		{
 			image: 'bee',
 			width: 50,
 			height: 50,
-			absolutePosition: {x: 250, y: 150}
+			absolutePosition: { x: 250, y: 150 }
 		},
 		{
 			image: 'bee',
 			width: 50,
 			height: 50,
-			absolutePosition: {x: 300, y: 100}
+			absolutePosition: { x: 300, y: 100 }
 		},
 
 		{
@@ -52,23 +45,23 @@ var docDefinition = {
 
 		{
 			text: 'As',
-			absolutePosition: {x: 100, y: 100}
+			absolutePosition: { x: 100, y: 100 }
 		},
 		{
 			text: 'well',
-			absolutePosition: {x: 150, y: 150}
+			absolutePosition: { x: 150, y: 150 }
 		},
 		{
 			text: 'as',
-			absolutePosition: {x: 200, y: 200}
+			absolutePosition: { x: 200, y: 200 }
 		},
 		{
 			text: 'text',
-			absolutePosition: {x: 250, y: 150}
+			absolutePosition: { x: 250, y: 150 }
 		},
 		{
 			text: '!!!',
-			absolutePosition: {x: 300, y: 100},
+			absolutePosition: { x: 300, y: 100 },
 			pageBreak: 'after'
 		},
 
@@ -79,10 +72,10 @@ var docDefinition = {
 			image: 'bee',
 			width: 100,
 			height: 100,
-			absolutePosition: {x: 100, y: 100}
+			absolutePosition: { x: 100, y: 100 }
 		},
 		{
-			absolutePosition: {x: 100, y: 100},
+			absolutePosition: { x: 100, y: 100 },
 			style: 'tableExample',
 			table: {
 				body: [
@@ -112,10 +105,11 @@ var docDefinition = {
 								},
 							}
 						],
-						{text: [
+						{
+							text: [
 								'Inlines can be ',
-								{text: 'styled\n', italics: true},
-								{text: 'easily as everywhere else', fontSize: 10}]
+								{ text: 'styled\n', italics: true },
+								{ text: 'easily as everywhere else', fontSize: 10 }]
 						}
 					]
 				]
@@ -148,7 +142,10 @@ var docDefinition = {
 };
 
 var now = new Date();
-var pdfDoc = printer.createPdfKitDocument(docDefinition);
-pdfDoc.pipe(fs.createWriteStream('pdfs/absolute.pdf'));
-pdfDoc.end();
-console.log(new Date() - now);
+
+var pdf = pdfmake.createPdf(docDefinition);
+pdf.write('pdfs/absolute.pdf').then(() => {
+	console.log(new Date() - now);
+}, err => {
+	console.error(err);
+});

@@ -1,20 +1,13 @@
-var fonts = {
-	Roboto: {
-		normal: 'fonts/Roboto-Regular.ttf',
-		bold: 'fonts/Roboto-Medium.ttf',
-		italics: 'fonts/Roboto-Italic.ttf',
-		bolditalics: 'fonts/Roboto-MediumItalic.ttf'
-	}
-};
+var pdfmake = require('../js/index'); // only during development, otherwise use the following line
+//var pdfmake = require('pdfmake');
 
-var PdfPrinter = require('../src/printer');
-var printer = new PdfPrinter(fonts);
-var fs = require('fs');
+var Roboto = require('../fonts/Roboto');
+pdfmake.addFonts(Roboto);
 
 
 var docDefinition = {
 	content: [
-		{text: 'Unordered list', style: 'header'},
+		{ text: 'Unordered list', style: 'header' },
 		{
 			ul: [
 				'item 1',
@@ -22,7 +15,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nUnordered list with longer lines', style: 'header'},
+		{ text: '\n\nUnordered list with longer lines', style: 'header' },
 		{
 			ul: [
 				'item 1',
@@ -30,7 +23,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nOrdered list', style: 'header'},
+		{ text: '\n\nOrdered list', style: 'header' },
 		{
 			ol: [
 				'item 1',
@@ -38,7 +31,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nOrdered list with longer lines', style: 'header'},
+		{ text: '\n\nOrdered list with longer lines', style: 'header' },
 		{
 			ol: [
 				'item 1',
@@ -46,7 +39,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nOrdered list should be descending', style: 'header'},
+		{ text: '\n\nOrdered list should be descending', style: 'header' },
 		{
 			reversed: true,
 			ol: [
@@ -55,7 +48,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nOrdered list with start value', style: 'header'},
+		{ text: '\n\nOrdered list with start value', style: 'header' },
 		{
 			start: 50,
 			ol: [
@@ -64,16 +57,16 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nOrdered list with own values', style: 'header'},
+		{ text: '\n\nOrdered list with own values', style: 'header' },
 		{
 			ol: [
-				{text: 'item 1', counter: 10},
-				{text: 'item 2', counter: 20},
-				{text: 'item 3', counter: 30},
-				{text: 'item 4 without own value'}
+				{ text: 'item 1', counter: 10 },
+				{ text: 'item 2', counter: 20 },
+				{ text: 'item 3', counter: 30 },
+				{ text: 'item 4 without own value' }
 			]
 		},
-		{text: '\n\nNested lists (ordered)', style: 'header'},
+		{ text: '\n\nNested lists (ordered)', style: 'header' },
 		{
 			ol: [
 				'item 1',
@@ -86,7 +79,8 @@ var docDefinition = {
 							'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 							'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 							'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
-							{text: [
+							{
+								text: [
 									'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 									'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 									'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
@@ -95,7 +89,8 @@ var docDefinition = {
 									'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 									'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 									'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
-								]},
+								]
+							},
 
 							'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 							'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
@@ -109,7 +104,7 @@ var docDefinition = {
 				'item 3\nsecond line of item3'
 			]
 		},
-		{text: '\n\nNested lists (unordered)', style: 'header'},
+		{ text: '\n\nNested lists (unordered)', style: 'header' },
 		{
 			ol: [
 				'item 1',
@@ -121,7 +116,8 @@ var docDefinition = {
 						'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 						'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 						'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
-						{text: [
+						{
+							text: [
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
@@ -130,7 +126,8 @@ var docDefinition = {
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
-							]},
+							]
+						},
 
 						'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 						'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
@@ -143,7 +140,7 @@ var docDefinition = {
 				'item 3\nsecond line of item3',
 			]
 		},
-		{text: '\n\nUnordered lists inside columns', style: 'header'},
+		{ text: '\n\nUnordered lists inside columns', style: 'header' },
 		{
 			columns: [
 				{
@@ -160,7 +157,7 @@ var docDefinition = {
 				}
 			]
 		},
-		{text: '\n\nOrdered lists inside columns', style: 'header'},
+		{ text: '\n\nOrdered lists inside columns', style: 'header' },
 		{
 			columns: [
 				{
@@ -177,7 +174,7 @@ var docDefinition = {
 				}
 			]
 		},
-		{text: '\n\nNested lists width columns', style: 'header'},
+		{ text: '\n\nNested lists width columns', style: 'header' },
 		{
 			ul: [
 				'item 1',
@@ -218,7 +215,8 @@ var docDefinition = {
 						'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 						'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 						'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
-						{text: [
+						{
+							text: [
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
@@ -227,7 +225,8 @@ var docDefinition = {
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 								'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
-							]},
+							]
+						},
 
 						'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
 						'subitem 3 - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit',
@@ -240,7 +239,7 @@ var docDefinition = {
 				'item 3\nsecond line of item3',
 			]
 		},
-		{text: '\n\nUnordered list with square marker type', style: 'header'},
+		{ text: '\n\nUnordered list with square marker type', style: 'header' },
 		{
 			type: 'square',
 			ul: [
@@ -249,7 +248,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nUnordered list with circle marker type', style: 'header'},
+		{ text: '\n\nUnordered list with circle marker type', style: 'header' },
 		{
 			type: 'circle',
 			ul: [
@@ -258,7 +257,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nColored unordered list', style: 'header'},
+		{ text: '\n\nColored unordered list', style: 'header' },
 		{
 			color: 'blue',
 			ul: [
@@ -267,7 +266,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nColored unordered list with own marker color', style: 'header'},
+		{ text: '\n\nColored unordered list with own marker color', style: 'header' },
 		{
 			color: 'blue',
 			markerColor: 'red',
@@ -277,7 +276,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nColored ordered list', style: 'header'},
+		{ text: '\n\nColored ordered list', style: 'header' },
 		{
 			color: 'blue',
 			ol: [
@@ -286,7 +285,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nColored ordered list with own marker color', style: 'header'},
+		{ text: '\n\nColored ordered list with own marker color', style: 'header' },
 		{
 			color: 'blue',
 			markerColor: 'red',
@@ -296,7 +295,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nOrdered list - type: lower-alpha', style: 'header'},
+		{ text: '\n\nOrdered list - type: lower-alpha', style: 'header' },
 		{
 			type: 'lower-alpha',
 			ol: [
@@ -305,7 +304,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nOrdered list - type: upper-alpha', style: 'header'},
+		{ text: '\n\nOrdered list - type: upper-alpha', style: 'header' },
 		{
 			type: 'upper-alpha',
 			ol: [
@@ -315,7 +314,7 @@ var docDefinition = {
 			]
 		},
 
-		{text: '\n\nOrdered list - type: upper-roman', style: 'header'},
+		{ text: '\n\nOrdered list - type: upper-roman', style: 'header' },
 		{
 			type: 'upper-roman',
 			ol: [
@@ -326,7 +325,7 @@ var docDefinition = {
 				'item 5'
 			]
 		},
-		{text: '\n\nOrdered list - type: lower-roman', style: 'header'},
+		{ text: '\n\nOrdered list - type: lower-roman', style: 'header' },
 		{
 			type: 'lower-roman',
 			ol: [
@@ -337,7 +336,7 @@ var docDefinition = {
 				'item 5'
 			]
 		},
-		{text: '\n\nOrdered list - type: none', style: 'header'},
+		{ text: '\n\nOrdered list - type: none', style: 'header' },
 		{
 			type: 'none',
 			ol: [
@@ -346,7 +345,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nUnordered list - type: none', style: 'header'},
+		{ text: '\n\nUnordered list - type: none', style: 'header' },
 		{
 			type: 'none',
 			ul: [
@@ -355,7 +354,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nOrdered list with own separator', style: 'header'},
+		{ text: '\n\nOrdered list with own separator', style: 'header' },
 		{
 			separator: ')',
 			ol: [
@@ -364,7 +363,7 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nOrdered list with own complex separator', style: 'header'},
+		{ text: '\n\nOrdered list with own complex separator', style: 'header' },
 		{
 			separator: ['(', ')'],
 			ol: [
@@ -373,20 +372,20 @@ var docDefinition = {
 				'item 3'
 			]
 		},
-		{text: '\n\nOrdered list with own items type', style: 'header'},
+		{ text: '\n\nOrdered list with own items type', style: 'header' },
 		{
 			ol: [
 				'item 1',
-				{text: 'item 2', listType: 'none'},
-				{text: 'item 3', listType: 'upper-roman'}
+				{ text: 'item 2', listType: 'none' },
+				{ text: 'item 3', listType: 'upper-roman' }
 			]
 		},
-		{text: '\n\nUnordered list with own items type', style: 'header'},
+		{ text: '\n\nUnordered list with own items type', style: 'header' },
 		{
 			ul: [
 				'item 1',
-				{text: 'item 2', listType: 'none'},
-				{text: 'item 3', listType: 'circle'}
+				{ text: 'item 2', listType: 'none' },
+				{ text: 'item 3', listType: 'circle' }
 			]
 		},
 	],
@@ -402,8 +401,10 @@ var docDefinition = {
 };
 
 var now = new Date();
-var pdfDoc = printer.createPdfKitDocument(docDefinition);
-pdfDoc.pipe(fs.createWriteStream('pdfs/lists.pdf'));
-pdfDoc.end();
 
-console.log(new Date() - now);
+var pdf = pdfmake.createPdf(docDefinition);
+pdf.write('pdfs/lists.pdf').then(() => {
+	console.log(new Date() - now);
+}, err => {
+	console.error(err);
+});

@@ -1,16 +1,8 @@
-var fonts = {
-	Roboto: {
-		normal: 'fonts/Roboto-Regular.ttf',
-		bold: 'fonts/Roboto-Medium.ttf',
-		italics: 'fonts/Roboto-Italic.ttf',
-		bolditalics: 'fonts/Roboto-MediumItalic.ttf'
-	}
-};
+var pdfmake = require('../js/index'); // only during development, otherwise use the following line
+//var pdfmake = require('pdfmake');
 
-var PdfPrinter = require('../src/printer');
-var printer = new PdfPrinter(fonts);
-var fs = require('fs');
-
+var Roboto = require('../fonts/Roboto');
+pdfmake.addFonts(Roboto);
 
 var docDefinition = {
 	content: [
@@ -22,14 +14,14 @@ var docDefinition = {
 			text: [
 				'It is however possible to provide an array of texts ',
 				'to the paragraph (instead of a single string) and have ',
-				{text: 'a better ', fontSize: 15, bold: true},
+				{ text: 'a better ', fontSize: 15, bold: true },
 				'control over it. \nEach inline can be ',
-				{text: 'styled ', fontSize: 20},
-				{text: 'independently ', italics: true, fontSize: 40},
+				{ text: 'styled ', fontSize: 20 },
+				{ text: 'independently ', italics: true, fontSize: 40 },
 				'then.\n\n'
 			]
 		},
-		{text: 'Mixing named styles and style-overrides', style: 'header'},
+		{ text: 'Mixing named styles and style-overrides', style: 'header' },
 		{
 			style: 'bigger',
 			italics: false,
@@ -39,12 +31,12 @@ var docDefinition = {
 				'Texts are not italics though. It\'s because we\'ve overriden italics back to false at ',
 				'the paragraph level. \n\n',
 				'We can also change the style of a single inline. Let\'s use a named style called header: ',
-				{text: 'like here.\n', style: 'header'},
+				{ text: 'like here.\n', style: 'header' },
 				'It got bigger and bold.\n\n',
 				'OK, now we\'re going to mix named styles and style-overrides at the inline level. ',
 				'We\'ll use header style (it makes texts bigger and bold), but we\'ll override ',
 				'bold back to false: ',
-				{text: 'wow! it works!', style: 'header', bold: false},
+				{ text: 'wow! it works!', style: 'header', bold: false },
 				'\n\nMake sure to take a look into the sources to understand what\'s going on here.'
 			]
 		}
@@ -61,6 +53,11 @@ var docDefinition = {
 	}
 };
 
-var pdfDoc = printer.createPdfKitDocument(docDefinition);
-pdfDoc.pipe(fs.createWriteStream('pdfs/styling_inlines.pdf'));
-pdfDoc.end();
+var now = new Date();
+
+var pdf = pdfmake.createPdf(docDefinition);
+pdf.write('pdfs/styling_inlines.pdf').then(() => {
+	console.log(new Date() - now);
+}, err => {
+	console.error(err);
+});
